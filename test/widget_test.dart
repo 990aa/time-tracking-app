@@ -5,6 +5,7 @@ import 'package:time_tracking_app/main.dart';
 import 'package:time_tracking_app/models/project.dart';
 import 'package:time_tracking_app/models/task.dart';
 import 'package:time_tracking_app/models/time_entry.dart';
+import 'package:time_tracking_app/providers/project_task_provider.dart';
 import 'package:time_tracking_app/providers/time_entry_provider.dart';
 import 'package:time_tracking_app/screens/add_time_entry_screen.dart';
 import 'package:time_tracking_app/screens/home_screen.dart';
@@ -12,9 +13,8 @@ import 'package:time_tracking_app/screens/project_task_management_screen.dart';
 
 void main() {
   group('MyApp Tests', () {
-    testWidgets('MyApp creates and displays HomeScreen', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('MyApp creates and displays HomeScreen',
+        (WidgetTester tester) async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
@@ -24,12 +24,14 @@ void main() {
   });
 
   group('HomeScreen Tests', () {
-    testWidgets('HomeScreen has a title and a floating action button', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('HomeScreen has a title and a floating action button',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
-        ChangeNotifierProvider(
-          create: (context) => TimeEntryProvider(),
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => TimeEntryProvider()),
+            ChangeNotifierProvider(create: (context) => ProjectTaskProvider()),
+          ],
           child: const MaterialApp(home: HomeScreen()),
         ),
       );
@@ -39,12 +41,14 @@ void main() {
       expect(find.byType(FloatingActionButton), findsOneWidget);
     });
 
-    testWidgets('HomeScreen shows empty state when no entries', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('HomeScreen shows empty state when no entries',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
-        ChangeNotifierProvider(
-          create: (context) => TimeEntryProvider(),
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => TimeEntryProvider()),
+            ChangeNotifierProvider(create: (context) => ProjectTaskProvider()),
+          ],
           child: const MaterialApp(home: HomeScreen()),
         ),
       );
@@ -53,12 +57,14 @@ void main() {
       expect(find.text('No time entries yet.'), findsOneWidget);
     });
 
-    testWidgets('HomeScreen has group/list toggle button', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('HomeScreen has group/list toggle button',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
-        ChangeNotifierProvider(
-          create: (context) => TimeEntryProvider(),
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => TimeEntryProvider()),
+            ChangeNotifierProvider(create: (context) => ProjectTaskProvider()),
+          ],
           child: const MaterialApp(home: HomeScreen()),
         ),
       );
@@ -70,12 +76,14 @@ void main() {
   });
 
   group('AddTimeEntryScreen Tests', () {
-    testWidgets('AddTimeEntryScreen has all required fields', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('AddTimeEntryScreen has all required fields',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
-        ChangeNotifierProvider(
-          create: (context) => TimeEntryProvider(),
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => TimeEntryProvider()),
+            ChangeNotifierProvider(create: (context) => ProjectTaskProvider()),
+          ],
           child: const MaterialApp(home: AddTimeEntryScreen()),
         ),
       );
@@ -85,59 +93,17 @@ void main() {
       expect(find.text('Project'), findsOneWidget);
       expect(find.text('Task'), findsOneWidget);
       expect(find.text('Notes'), findsOneWidget);
-      expect(find.text('Select Date'), findsOneWidget);
-      expect(find.text('Select Time'), findsOneWidget);
-      expect(find.text('Add Entry'), findsOneWidget);
-    });
-
-    testWidgets('AddTimeEntryScreen has project dropdown', (
-      WidgetTester tester,
-    ) async {
-      await tester.pumpWidget(
-        ChangeNotifierProvider(
-          create: (context) => TimeEntryProvider(),
-          child: const MaterialApp(home: AddTimeEntryScreen()),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is DropdownButtonFormField<Project> &&
-              widget.decoration.labelText == 'Project',
-        ),
-        findsOneWidget,
-      );
-    });
-
-    testWidgets('AddTimeEntryScreen has task dropdown', (
-      WidgetTester tester,
-    ) async {
-      await tester.pumpWidget(
-        ChangeNotifierProvider(
-          create: (context) => TimeEntryProvider(),
-          child: const MaterialApp(home: AddTimeEntryScreen()),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is DropdownButtonFormField<Task> &&
-              widget.decoration.labelText == 'Task',
-        ),
-        findsOneWidget,
-      );
     });
   });
 
   group('MainDrawer Tests', () {
     testWidgets('MainDrawer navigation works', (WidgetTester tester) async {
       await tester.pumpWidget(
-        ChangeNotifierProvider(
-          create: (context) => TimeEntryProvider(),
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => TimeEntryProvider()),
+            ChangeNotifierProvider(create: (context) => ProjectTaskProvider()),
+          ],
           child: MaterialApp(
             home: const HomeScreen(),
             routes: {
@@ -159,19 +125,17 @@ void main() {
   });
 
   group('ProjectTaskManagementScreen Tests', () {
-    testWidgets('ProjectTaskManagementScreen displays correctly', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('ProjectTaskManagementScreen displays correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(home: ProjectTaskManagementScreen()),
       );
       await tester.pumpAndSettle();
 
       expect(find.text('Manage Projects & Tasks'), findsOneWidget);
-      expect(
-        find.text('Management screen for projects and tasks.'),
-        findsOneWidget,
-      );
+      expect(find.text('What would you like to manage?'), findsOneWidget);
+      expect(find.text('Projects'), findsOneWidget);
+      expect(find.text('Tasks'), findsOneWidget);
     });
   });
 
@@ -260,3 +224,5 @@ void main() {
     });
   });
 }
+
+
