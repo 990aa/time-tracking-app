@@ -57,59 +57,162 @@ class TaskManagementScreen extends StatelessWidget {
     final tasks = provider.tasks;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Manage Tasks')),
-      body: tasks.isEmpty
-          ? const Center(
-              child: Text(
-                'No tasks yet.\nTap + to add a task.',
-                textAlign: TextAlign.center,
-              ),
-            )
-          : ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (ctx, index) {
-                final task = tasks[index];
-                return ListTile(
-                  title: Text(task.name),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                          title: const Text('Delete Task'),
-                          content: Text(
-                            'Are you sure you want to delete "${task.name}"?',
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(ctx).pop(),
-                              child: const Text('Cancel'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                provider.deleteTask(task.id);
-                                Navigator.of(ctx).pop();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Task deleted')),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                              ),
-                              child: const Text('Delete'),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
+      appBar: AppBar(
+        title: const Text('Manage Tasks'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.green.shade700, Colors.green.shade400],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-      floatingActionButton: FloatingActionButton(
+          ),
+        ),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.green.shade50, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: tasks.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.task_outlined,
+                      size: 80,
+                      color: Colors.grey.shade400,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No tasks yet.',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Tap + to add a task',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.all(12),
+                itemCount: tasks.length,
+                itemBuilder: (ctx, index) {
+                  final task = tasks[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 6,
+                    ),
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.white, Colors.green.shade50],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(16),
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.green.shade700,
+                          radius: 28,
+                          child: const Icon(
+                            Icons.task_alt,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                        title: Text(
+                          task.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.delete_rounded,
+                            color: Colors.red.shade700,
+                            size: 28,
+                          ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                title: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.warning_amber_rounded,
+                                      color: Colors.red.shade700,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Text('Delete Task'),
+                                  ],
+                                ),
+                                content: Text(
+                                  'Are you sure you want to delete "${task.name}"?',
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.of(ctx).pop(),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      provider.deleteTask(task.id);
+                                      Navigator.of(ctx).pop();
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Task deleted'),
+                                          behavior: SnackBarBehavior.floating,
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                    ),
+                                    child: const Text('Delete'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showAddTaskDialog(context),
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add),
+        label: const Text('Add Task'),
+        backgroundColor: Colors.green.shade700,
       ),
     );
   }

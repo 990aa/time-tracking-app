@@ -98,9 +98,7 @@ class MainDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (ctx) => const LocalStorageScreen(),
-                ),
+                MaterialPageRoute(builder: (ctx) => const LocalStorageScreen()),
               );
             },
           ),

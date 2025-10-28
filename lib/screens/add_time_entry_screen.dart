@@ -52,166 +52,464 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
     final tasks = projectTaskProvider.tasks;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Time Entry')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              if (projects.isEmpty)
+      appBar: AppBar(
+        title: const Text('Add Time Entry'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue.shade700, Colors.blue.shade400],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade50, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                if (projects.isEmpty)
+                  Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade100,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.orange.shade300,
+                          width: 2,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              color: Colors.orange.shade800,
+                              size: 32,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                'No projects available. Please add projects first in the settings.',
+                                style: TextStyle(
+                                  color: Colors.orange.shade900,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                if (tasks.isEmpty)
+                  Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade100,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.orange.shade300,
+                          width: 2,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              color: Colors.orange.shade800,
+                              size: 32,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                'No tasks available. Please add tasks first in the settings.',
+                                style: TextStyle(
+                                  color: Colors.orange.shade900,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 16),
                 Card(
-                  color: Colors.orange.shade100,
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'No projects available. Please add projects first in the settings.',
-                      style: TextStyle(color: Colors.orange),
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.folder, color: Colors.orange.shade700),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Project',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        DropdownButtonFormField<Project>(
+                          initialValue: _selectedProject,
+                          items: projects
+                              .map(
+                                (project) => DropdownMenuItem(
+                                  value: project,
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.orange.shade700,
+                                        radius: 12,
+                                        child: Text(
+                                          project.name[0].toUpperCase(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Text(project.name),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedProject = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'Select Project',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.folder_open,
+                              color: Colors.orange.shade700,
+                            ),
+                          ),
+                          validator: (value) =>
+                              value == null ? 'Please select a project' : null,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              if (tasks.isEmpty)
+                const SizedBox(height: 16),
                 Card(
-                  color: Colors.orange.shade100,
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'No tasks available. Please add tasks first in the settings.',
-                      style: TextStyle(color: Colors.orange),
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.task_alt, color: Colors.green.shade700),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Task',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        DropdownButtonFormField<Task>(
+                          initialValue: _selectedTask,
+                          items: tasks
+                              .map(
+                                (task) => DropdownMenuItem(
+                                  value: task,
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.green.shade700,
+                                        radius: 12,
+                                        child: const Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                          size: 14,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Text(task.name),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedTask = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'Select Task',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.assignment,
+                              color: Colors.green.shade700,
+                            ),
+                          ),
+                          validator: (value) =>
+                              value == null ? 'Please select a task' : null,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<Project>(
-                initialValue: _selectedProject,
-                items: projects
-                    .map(
-                      (project) => DropdownMenuItem(
-                        value: project,
-                        child: Text(project.name),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedProject = value;
-                  });
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Project',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) =>
-                    value == null ? 'Please select a project' : null,
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<Task>(
-                initialValue: _selectedTask,
-                items: tasks
-                    .map(
-                      (task) =>
-                          DropdownMenuItem(value: task, child: Text(task.name)),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedTask = value;
-                  });
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Task',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) =>
-                    value == null ? 'Please select a task' : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Notes',
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter any notes about this time entry',
-                ),
-                maxLines: 3,
-                onSaved: (value) {
-                  _notes = value ?? '';
-                },
-              ),
-              const SizedBox(height: 20),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.calendar_today),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              'Date: ${DateFormat.yMd().format(_selectedDate)}',
-                              style: const TextStyle(fontSize: 16),
+                const SizedBox(height: 16),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.note, color: Colors.blue.shade700),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Notes',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Notes (Optional)',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            hintText: 'Enter any notes about this time entry',
+                            prefixIcon: Icon(
+                              Icons.edit_note,
+                              color: Colors.blue.shade700,
                             ),
                           ),
-                          TextButton(
-                            onPressed: () async {
-                              final pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: _selectedDate,
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2101),
-                              );
-                              if (pickedDate != null) {
-                                setState(() {
-                                  _selectedDate = pickedDate;
-                                });
-                              }
-                            },
-                            child: const Text('Change'),
-                          ),
-                        ],
-                      ),
-                      const Divider(),
-                      Row(
-                        children: [
-                          const Icon(Icons.access_time),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              'Duration: ${_selectedTime.format(context)}',
-                              style: const TextStyle(fontSize: 16),
+                          maxLines: 3,
+                          onSaved: (value) {
+                            _notes = value ?? '';
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.purple.shade700,
+                              child: const Icon(
+                                Icons.calendar_today,
+                                color: Colors.white,
+                                size: 20,
+                              ),
                             ),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              final pickedTime = await showTimePicker(
-                                context: context,
-                                initialTime: _selectedTime,
-                              );
-                              if (pickedTime != null) {
-                                setState(() {
-                                  _selectedTime = pickedTime;
-                                });
-                              }
-                            },
-                            child: const Text('Change'),
-                          ),
-                        ],
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Date',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  Text(
+                                    DateFormat.yMMMd().format(_selectedDate),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                final pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: _selectedDate,
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2101),
+                                );
+                                if (pickedDate != null) {
+                                  setState(() {
+                                    _selectedDate = pickedDate;
+                                  });
+                                }
+                              },
+                              icon: const Icon(Icons.edit, size: 16),
+                              label: const Text('Change'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.purple.shade700,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(height: 24),
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.teal.shade700,
+                              child: const Icon(
+                                Icons.access_time,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Duration',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${_selectedTime.hour}h ${_selectedTime.minute}m',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                final pickedTime = await showTimePicker(
+                                  context: context,
+                                  initialTime: _selectedTime,
+                                );
+                                if (pickedTime != null) {
+                                  setState(() {
+                                    _selectedTime = pickedTime;
+                                  });
+                                }
+                              },
+                              icon: const Icon(Icons.edit, size: 16),
+                              label: const Text('Change'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.teal.shade700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.blue.shade700, Colors.blue.shade500],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.shade700.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
+                  child: ElevatedButton.icon(
+                    onPressed: projects.isEmpty || tasks.isEmpty
+                        ? null
+                        : _submit,
+                    icon: const Icon(Icons.add_circle, size: 24),
+                    label: const Text(
+                      'Add Time Entry',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      minimumSize: const Size.fromHeight(56),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton.icon(
-                onPressed: projects.isEmpty || tasks.isEmpty ? null : _submit,
-                icon: const Icon(Icons.add),
-                label: const Text('Add Entry'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
-                ),
-              ),
-            ],
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
