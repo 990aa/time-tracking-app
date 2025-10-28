@@ -34,12 +34,14 @@ class TaskManagementScreen extends StatelessWidget {
                   id: const Uuid().v4(),
                   name: controller.text.trim(),
                 );
-                Provider.of<ProjectTaskProvider>(context, listen: false)
-                    .addTask(task);
+                Provider.of<ProjectTaskProvider>(
+                  context,
+                  listen: false,
+                ).addTask(task);
                 Navigator.of(ctx).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Task added')),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('Task added')));
               }
             },
             child: const Text('Add'),
@@ -55,9 +57,7 @@ class TaskManagementScreen extends StatelessWidget {
     final tasks = provider.tasks;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manage Tasks'),
-      ),
+      appBar: AppBar(title: const Text('Manage Tasks')),
       body: tasks.isEmpty
           ? const Center(
               child: Text(

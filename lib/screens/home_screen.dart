@@ -63,9 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
             provider.deleteEntry(entry.id);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Entry deleted')),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('Entry deleted')));
           },
           background: Container(
             color: Colors.red,
@@ -151,9 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     if (groupedEntries.isEmpty) {
-      return const Center(
-        child: Text('No time entries yet.'),
-      );
+      return const Center(child: Text('No time entries yet.'));
     }
 
     return ListView.builder(
@@ -169,9 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return Card(
           margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           child: ExpansionTile(
-            leading: CircleAvatar(
-              child: Text(projectName[0].toUpperCase()),
-            ),
+            leading: CircleAvatar(child: Text(projectName[0].toUpperCase())),
             title: Text(
               projectName,
               style: const TextStyle(fontWeight: FontWeight.bold),
@@ -198,9 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     trailing: Text(
                       '${entry.duration.inHours}h ${entry.duration.inMinutes.remainder(60)}m',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 )

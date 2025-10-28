@@ -13,8 +13,9 @@ import 'package:time_tracking_app/screens/project_task_management_screen.dart';
 
 void main() {
   group('MyApp Tests', () {
-    testWidgets('MyApp creates and displays HomeScreen',
-        (WidgetTester tester) async {
+    testWidgets('MyApp creates and displays HomeScreen', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
@@ -24,8 +25,9 @@ void main() {
   });
 
   group('HomeScreen Tests', () {
-    testWidgets('HomeScreen has a title and a floating action button',
-        (WidgetTester tester) async {
+    testWidgets('HomeScreen has a title and a floating action button', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
@@ -41,8 +43,9 @@ void main() {
       expect(find.byType(FloatingActionButton), findsOneWidget);
     });
 
-    testWidgets('HomeScreen shows empty state when no entries',
-        (WidgetTester tester) async {
+    testWidgets('HomeScreen shows empty state when no entries', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
@@ -57,8 +60,9 @@ void main() {
       expect(find.text('No time entries yet.'), findsOneWidget);
     });
 
-    testWidgets('HomeScreen has group/list toggle button',
-        (WidgetTester tester) async {
+    testWidgets('HomeScreen has group/list toggle button', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
@@ -76,8 +80,9 @@ void main() {
   });
 
   group('AddTimeEntryScreen Tests', () {
-    testWidgets('AddTimeEntryScreen has all required fields',
-        (WidgetTester tester) async {
+    testWidgets('AddTimeEntryScreen has all required fields', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
@@ -125,8 +130,9 @@ void main() {
   });
 
   group('ProjectTaskManagementScreen Tests', () {
-    testWidgets('ProjectTaskManagementScreen displays correctly',
-        (WidgetTester tester) async {
+    testWidgets('ProjectTaskManagementScreen displays correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(home: ProjectTaskManagementScreen()),
       );
@@ -224,5 +230,3 @@ void main() {
     });
   });
 }
-
-

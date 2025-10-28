@@ -34,12 +34,14 @@ class ProjectManagementScreen extends StatelessWidget {
                   id: const Uuid().v4(),
                   name: controller.text.trim(),
                 );
-                Provider.of<ProjectTaskProvider>(context, listen: false)
-                    .addProject(project);
+                Provider.of<ProjectTaskProvider>(
+                  context,
+                  listen: false,
+                ).addProject(project);
                 Navigator.of(ctx).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Project added')),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('Project added')));
               }
             },
             child: const Text('Add'),
@@ -55,9 +57,7 @@ class ProjectManagementScreen extends StatelessWidget {
     final projects = provider.projects;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manage Projects'),
-      ),
+      appBar: AppBar(title: const Text('Manage Projects')),
       body: projects.isEmpty
           ? const Center(
               child: Text(

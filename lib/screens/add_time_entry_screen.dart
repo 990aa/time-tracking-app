@@ -39,9 +39,9 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
       );
       Provider.of<TimeEntryProvider>(context, listen: false).addEntry(newEntry);
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Time entry added')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Time entry added')));
     }
   }
 
@@ -204,8 +204,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
               ),
               const SizedBox(height: 20),
               ElevatedButton.icon(
-                onPressed:
-                    projects.isEmpty || tasks.isEmpty ? null : _submit,
+                onPressed: projects.isEmpty || tasks.isEmpty ? null : _submit,
                 icon: const Icon(Icons.add),
                 label: const Text('Add Entry'),
                 style: ElevatedButton.styleFrom(

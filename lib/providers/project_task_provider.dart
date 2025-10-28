@@ -20,7 +20,7 @@ class ProjectTaskProvider with ChangeNotifier {
   Future<void> _loadData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       final projectsData = prefs.getString('projects');
       if (projectsData != null) {
         final decoded = json.decode(projectsData) as List;

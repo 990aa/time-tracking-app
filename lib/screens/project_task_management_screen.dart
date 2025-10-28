@@ -30,9 +30,7 @@ class ProjectTaskManagementScreen extends StatelessWidget {
               },
               icon: const Icon(Icons.folder, size: 30),
               label: const Text('Projects', style: TextStyle(fontSize: 18)),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 60),
-              ),
+              style: ElevatedButton.styleFrom(minimumSize: const Size(200, 60)),
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
@@ -45,9 +43,7 @@ class ProjectTaskManagementScreen extends StatelessWidget {
               },
               icon: const Icon(Icons.task, size: 30),
               label: const Text('Tasks', style: TextStyle(fontSize: 18)),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 60),
-              ),
+              style: ElevatedButton.styleFrom(minimumSize: const Size(200, 60)),
             ),
           ],
         ),
