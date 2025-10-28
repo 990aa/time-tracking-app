@@ -242,26 +242,85 @@ class _HomeScreenState extends State<HomeScreen>
                       ],
                     ),
                   ),
-                  trailing: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade700,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          '${entry.duration.inHours}h ${entry.duration.inMinutes.remainder(60)}m',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.white,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade700,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              '${entry.duration.inHours}h ${entry.duration.inMinutes.remainder(60)}m',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete_rounded,
+                          color: Colors.red.shade700,
+                          size: 24,
                         ),
+                        padding: const EdgeInsets.all(8),
+                        constraints: const BoxConstraints(),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              title: Row(
+                                children: [
+                                  Icon(
+                                    Icons.warning_amber_rounded,
+                                    color: Colors.red.shade700,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text('Delete Entry'),
+                                ],
+                              ),
+                              content: const Text(
+                                'Are you sure you want to delete this time entry?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(ctx).pop(),
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    provider.deleteEntry(entry.id);
+                                    Navigator.of(ctx).pop();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Entry deleted'),
+                                        behavior: SnackBarBehavior.floating,
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                  ),
+                                  child: const Text('Delete'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
